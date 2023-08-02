@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Returns an obusfcated log message"""
-import csv
 import re
 from typing import List
 import logging
+
+
+PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
 
 
 class RedactingFormatter(logging.Formatter):
@@ -53,12 +55,6 @@ def get_logger():
     logger.addHandler(stream_handler)
 
     return logger
-
-
-# Load the PII fields from user_data.csv
-with open('user_data.csv', newline='') as csvfile:
-    reader = csv.reader(csvfile)
-    PII_FIELDS = next(reader)
 
 
 def filter_datum(fields: List[str], redaction: str, message: str,
