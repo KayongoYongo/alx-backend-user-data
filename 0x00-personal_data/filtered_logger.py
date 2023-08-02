@@ -14,10 +14,22 @@ class RedactingFormatter(logging.Formatter):
     SEPARATOR = ";"
 
     def __init__(self, fields: List[str]):
+        """
+        This function initializes a RedactingFormater instance.
+
+        args:
+            fields: a list of strings reperesenting all fields to obfuscate.
+        """
         super(RedactingFormatter, self).__init__(self.FORMAT)
         self.fields = fields
 
     def format(self, record: logging.LogRecord) -> str:
+        """
+        This function formats a log message
+
+        args:
+            record: The file to be formatted
+        """
         log_message = super().format(record)
         return filter_datum(self.fields, self.REDACTION, log_message,
                             self.SEPARATOR)
@@ -25,7 +37,8 @@ class RedactingFormatter(logging.Formatter):
 
 def filter_datum(fields: List[str], redaction: str, message: str,
                  separator: str) -> str:
-    """This function obusfcates a string
+    """
+    This function obusfcates a string
 
     Args:
         fields: a list of strings representing all fields to obfuscate
