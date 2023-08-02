@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Returns an obusfcated log message"""
+import csv
 import re
 from typing import List
 import logging
@@ -33,6 +34,30 @@ class RedactingFormatter(logging.Formatter):
         log_message = super().format(record)
         return filter_datum(self.fields, self.REDACTION, log_message,
                             self.SEPARATOR)
+
+
+def get_logger():
+    """
+    This function creates a logger object called user-data.
+
+    Return:
+        A value
+    """
+    logger = logging.getLogger('user_data')
+    logger.setLevel(logging.INFO)
+    logger.propagate =  False
+
+    formatter = RedactingFormatter(fields=PII_FIELDS)
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
+
+    return logger
+
+# Load the PII fields from user_data.csv
+with open('user_data.csv', newline='') as csvfile:
+    reader = csv.reader(csvfile)
+    PII_FIELDS = next(reader)
 
 
 def filter_datum(fields: List[str], redaction: str, message: str,
