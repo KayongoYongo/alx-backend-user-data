@@ -45,7 +45,7 @@ def get_logger():
     """
     logger = logging.getLogger('user_data')
     logger.setLevel(logging.INFO)
-    logger.propagate =  False
+    logger.propagate = False
 
     formatter = RedactingFormatter(fields=PII_FIELDS)
     stream_handler = logging.StreamHandler()
@@ -53,6 +53,7 @@ def get_logger():
     logger.addHandler(stream_handler)
 
     return logger
+
 
 # Load the PII fields from user_data.csv
 with open('user_data.csv', newline='') as csvfile:
