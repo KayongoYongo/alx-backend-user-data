@@ -106,3 +106,45 @@ def get_db() -> MySQLConnection:
     )
 
     return connection
+
+
+def main() -> None:
+    """
+    The main function to retrieve and display filtered data
+    from the users table.
+    """
+    # Create the logger
+    logger = logging.getLogger('user_data')
+    logger.setLevel(logging.INFO)
+    logger.propagate = False
+
+    # Set up the formatter
+    PII_FIELDS = ('name', 'email', 'phone', 'ssn', 'password')
+    formatter = RedactingFormatter(fields=PII_FIELDS)
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
+
+    # Get the database connection
+    db = get_db()
+    cursor = db.cursor()
+
+    # Retrieve all rows from the users table
+    query = "SELECT * FROM users;"
+    cursor.execute(query)
+    rows = cursor.fetchall()
+
+    # Display each row under a filtered format
+    for row in rows:
+        filtered_data = "; ".join([f"{field}={formatter.REDACTION}" if\
+                field in PII_FIELDS else f"{field}={value}" for field,\
+                value in zip(cursor.column_names, row)])
+        logger.info(filtered_data)
+
+    # Close the cursor and connection
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
