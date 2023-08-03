@@ -84,7 +84,7 @@ def filter_datum(fields: List[str], redaction: str, message: str,
     return message
 
 
-def get_db():
+def get_db() -> MySQLConnection:
     """
     This function returns a connector to the MySQL database.
 
