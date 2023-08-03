@@ -35,7 +35,7 @@ class RedactingFormatter(logging.Formatter):
                             self.SEPARATOR)
 
 
-def get_logger():
+def get_logger() -> logging.Logger:
     """
     This function creates a logger object called user-data.
 
