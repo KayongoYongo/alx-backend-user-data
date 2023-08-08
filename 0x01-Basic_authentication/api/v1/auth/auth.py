@@ -33,7 +33,6 @@ class Auth:
             elif path == excluded_path:
                 return False
 
-
         return True
         """
         # Ensure all excluded paths end with a slash for proper matching
