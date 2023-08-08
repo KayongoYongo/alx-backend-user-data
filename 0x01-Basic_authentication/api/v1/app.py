@@ -26,7 +26,7 @@ elif AUTH_TYPE == 'basic_auth':
     auth = BasicAuth()
 
 
-@fapp.before_request
+@app.before_request
 def before_request():
     """A before request method.
     It filters each request.
