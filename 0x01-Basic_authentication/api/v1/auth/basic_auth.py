@@ -110,16 +110,15 @@ class BasicAuth(Auth):
 
         try:
             # Search for the User instance based on email
-            user_instances = User.search({'email': user_email})
+            users = User.search({'email': user_email})
 
-            if not user_instances or user_instances == []:
+            if not users or users == []:
                 return None
 
-            user_instance = user_instances[0]
+            user = users[0]
 
-            if user_instance.is_valid_password(user_pwd):
-                return None
-            return user_instance
-
+            if user.is_valid_password(user_pwd):
+                return user
+            return None
         except Exception:
             return None
