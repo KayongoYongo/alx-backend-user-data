@@ -39,21 +39,21 @@ def before_request():
     """
     if auth is None:
         pass
+    else:
+        setattr(request, "current_user", auth.current_user(request))
+        # List of paths that don't require authentication
+        excluded_list = ['/api/v1/status/', '/api/v1/unauthorized/',
+                         '/api/v1/forbidden/']
 
-    # List of paths that don't require authentication
-    excluded_list = ['/api/v1/status/', '/api/v1/unauthorized/',
-                     '/api/v1/forbidden/']
+        # Check if the request path is exempt from authentication
+        if request.path in excluded_list:
+            pass
 
-    # Check if the request path is exempt from authentication
-    if request.path in excluded_list:
-        pass
-
-    if auth.require_auth(request.path, excluded_list):
-        if auth.authorization_header(request) is None:
-            abort(401, description="Unauthorized")
-        request.current_user = auth.current_user(request)
-        if auth.current_user(request) is None:
-            abort(403, description="Forbidden")
+        if auth.require_auth(request.path, excluded_list):
+            if auth.authorization_header(request) is None:
+                abort(401, description="Unauthorized")
+            if auth.current_user(request) is None:
+                abort(403, description="Forbidden")
 
 
 @app.errorhandler(404)
