@@ -45,15 +45,17 @@ def before_request():
     else:
         setattr(request, "current_user", auth.current_user(request))
         # List of paths that don't require authentication
-        excluded_list = ['/api/v1/status/', '/api/v1/unauthorized/',
-                         '/api/v1/forbidden/']
+        excluded_list = ['/api/v1/status/', 
+                         '/api/v1/unauthorized/','/api/v1/forbidden/', 
+                         '/api/v1/auth_session/login/']
 
         # Check if the request path is exempt from authentication
         if request.path in excluded_list:
             pass
 
         if auth.require_auth(request.path, excluded_list):
-            if auth.authorization_header(request) is None:
+            cookie = auth.session_cookie(request)
+            if auth.authorization_header(request) is None and cookie is None:
                 abort(401, description="Unauthorized")
             if auth.current_user(request) is None:
                 abort(403, description="Forbidden")
