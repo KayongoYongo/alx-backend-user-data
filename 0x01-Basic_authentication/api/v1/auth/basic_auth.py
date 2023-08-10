@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 """A clas that impliments the Basic Auth
 """
 import base64
@@ -102,22 +103,21 @@ class BasicAuth(Auth):
         Return:
             An instance of the user
         """
-        if user_email is None or isinstance(user_email, str):
+        if user_email is None or not isinstance(user_email, str):
             return None
 
-        if user_pwd is None or isinstance(user_pwd, str):
+        if user_pwd is None or not isinstance(user_pwd, str):
             return None
 
         # Search for the User instance based on email
         users = User.search({'email': user_email})
 
-        if not users or users == []:
+        if not users or len(users) == 0:
             return None
 
-        user = users[0]
-
-        if user.is_valid_password(user_pwd):
-            return user
+        for user in users:
+            if user.is_valid_password(user_pwd):
+                return user
         return None
 
     def current_user(self, request=None):
