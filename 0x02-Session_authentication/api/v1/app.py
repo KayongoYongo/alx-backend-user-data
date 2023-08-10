@@ -45,8 +45,8 @@ def before_request():
     else:
         setattr(request, "current_user", auth.current_user(request))
         # List of paths that don't require authentication
-        excluded_list = ['/api/v1/status/', 
-                         '/api/v1/unauthorized/','/api/v1/forbidden/', 
+        excluded_list = ['/api/v1/status/',
+                         '/api/v1/unauthorized/', '/api/v1/forbidden/',
                          '/api/v1/auth_session/login/']
 
         # Check if the request path is exempt from authentication
