@@ -85,7 +85,7 @@ class Auth:
 
         Parameter:
             request: A session request
-        
+
         Return:
             Returns a cookie value
         """
