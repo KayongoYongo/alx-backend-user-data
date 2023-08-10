@@ -81,7 +81,7 @@ class Auth:
 
     def session_cookie(self, request=None):
         """
-        A function tha treturns  cookie value from a request
+        A function that returns  cookie value from a request
 
         Parameter:
             request: A session request
@@ -94,3 +94,18 @@ class Auth:
 
         _session_name = os.getenv('SESSION_NAME')
         return request.cookies.get(_session_name)
+
+    def current_user(self, request=None):
+        """
+        A function that returns a user instance based on cookie value
+
+        Parameters:
+            request: A session request
+
+        Return:
+            A user instance
+        """
+        session_cookie = self.session_cookie(request)
+        user_id = self.user_id_for_session_id(session_cookie)
+        user = User.get(user_id)
+        return user
