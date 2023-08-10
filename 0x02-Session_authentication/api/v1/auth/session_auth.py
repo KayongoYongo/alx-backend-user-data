@@ -34,7 +34,7 @@ class SessionAuth(Auth):
     def user_id_for_session_id(self, session_id: str = None) -> str:
         """
         This function returns a user ID based on session ID
-        
+
         Parameters:
             session_id: The ID of the session
 
