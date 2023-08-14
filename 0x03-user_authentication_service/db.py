@@ -1,7 +1,9 @@
 """DB module
 """
 from sqlalchemy import create_engine
+from sqlalchemy import inspect
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.exc import NoResultFound, MultipleResultsFound, InvalidRequestError
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import exc
 from sqlalchemy.orm.session import Session
@@ -53,3 +55,31 @@ class DB:
             raise ValueError("User with this email exists.")
 
         return user
+
+    def find_user_by(self, **kwargs) -> User:
+        """
+        Find a user by given filter arguments
+
+        Args:
+            **kwargs: Arbitrary keyword arguments to filter the user.
+
+        Returns:
+            User: The found user object.
+
+        Raises:
+            NoResultFound: When no user is found
+            MultipleResultsFOund: When multiple users match the filter
+            InvalidRequestError: When Invalid query arguments are passed
+        """
+
+        try:
+            user = self._session.query(User).filter_by(**kwargs).first()
+
+            if user is None:
+                 raise NoResultFound("No user found.")
+            else:
+                 return user
+        except MultipleResultsFound:
+            raise NoResultFound("Multiple users found.")
+        except InvalidRequestError as e:
+            raise InvalidRequestError(f"Invalid query arguments: {e}")
