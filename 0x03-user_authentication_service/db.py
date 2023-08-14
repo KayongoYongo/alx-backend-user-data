@@ -1,15 +1,13 @@
+#!/usr/bin/env python3
 """DB module
 """
 from sqlalchemy import create_engine
-from sqlalchemy import inspect
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.exc import NoResultFound, MultipleResultsFound, InvalidRequestError
+from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import exc
 from sqlalchemy.orm.session import Session
-from user import User
-
-from user import Base
+from sqlalchemy.orm.exc import NoResultFound
+from user import User, Base
 
 
 class DB:
@@ -46,14 +44,7 @@ class DB:
         """
 
         user = User(email=email, hashed_password=hashed_password)
-        self._session.commit()
-
-        try:
-            self._session.commit()
-        except exc.IntegrityError:
-            self._session.rollback()
-            raise ValueError("User with this email exists.")
-
+        self._session.add(user)
         return user
 
     def find_user_by(self, **kwargs) -> User:
@@ -72,14 +63,12 @@ class DB:
             InvalidRequestError: When Invalid query arguments are passed
         """
 
-        try:
-            user = self._session.query(User).filter_by(**kwargs).first()
+        if not kwargs:
+            raise InvalidRequestError
 
-            if user is None:
-                 raise NoResultFound("No user found.")
-            else:
-                 return user
-        except MultipleResultsFound:
-            raise NoResultFound("Multiple users found.")
-        except InvalidRequestError as e:
-            raise InvalidRequestError(f"Invalid query arguments: {e}")
+        user = self._session.query(User).filter_by(**kwargs).first()
+
+        if user is None:
+            raise NoResultFound
+        else:
+            return user
