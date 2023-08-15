@@ -4,7 +4,7 @@
 import bcrypt
 
 
-def _hash_password(password):
+def _hash_password(password: str) -> str:
     """
     A method for hashing out a password
 
