@@ -10,8 +10,15 @@ Base = declarative_base()
 
 
 class User(Base):
-    __tablename__ = 'users'
+    """This class is responsible for the creation of the user model
 
+    Args:
+        Base: The inherited declarative base
+
+    Return:
+        None
+    """
+    __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
     email = Column(String, nullable=False)
