@@ -75,8 +75,8 @@ class DB:
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """
-        A method that takes as argument a required user_id integer 
-	and arbitrary keyword arguments, and returns None
+        A method that takes as argument a required user_id integer
+        and arbitrary keyword arguments, and returns None
 
         Args:
             user_id (int): The user's ID
