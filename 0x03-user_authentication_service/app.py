@@ -31,7 +31,7 @@ def users() -> str:
 
     # register user if user does not exist
     try:
-        user = ATH.register_user(email, password)
+        user = AUTH.register_user(email, password)
         return jsonify({"email": user.email, "message": "user created"})
     except Exception:
         return jsonify({"message": "email already registered"}), 400
