@@ -15,6 +15,7 @@ def index() -> str:
     """
     return jsonify({"message": "Bienvenue"})
 
+
 @app.route('/users', methods=['POST'])
 def users() -> str:
     """A function that impiments a POST method on the users table.
