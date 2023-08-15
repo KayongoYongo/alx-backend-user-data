@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """A function that encrypts a password
 """
+from user import User
+from typing import Union
+from sqlalchemy.orm.exc import NoResultFound
 import bcrypt
 from db import DB
-from user import User
-from sqlalchemy.orm.exc import NoResultFound
-from typing import Union
 
 
 def _hash_password(password: str) -> str:
@@ -21,6 +21,7 @@ def _hash_password(password: str) -> str:
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
     return hashed_password
+
 
 class Auth:
     """Auth class to interact with the authentication database.
