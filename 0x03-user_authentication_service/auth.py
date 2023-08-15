@@ -39,12 +39,34 @@ class Auth:
         Args:
             email: The email of the user
             password: The password of the user
+
         Return:
             None or user object
         """
         try:
-            self._db.find_user_by(email=email)
+            # find the user with the given email
+            user = self._db.find_user_by(email=email)
         except NoResultFound:
             return self._db.add_user(email, _hash_password(password))
         else:
             raise ValueError('User {} already exists'.format(email))
+
+    def valid_login(self, email: str, password: str) -> bool:
+        """
+        This function checks if the log in is valid.
+
+        Args:
+            email: The users email
+            password: The users password
+
+        Return:
+            True or False
+        """
+        try:
+            # find the user with the given email
+            user = self._db.find_user_by(email=email)
+        except NoResultFound:
+            return False
+
+        # check the validity of the password and returns true
+        return bcrypt.checkpw(password.encode('utf-8'), user.hashed_password)
