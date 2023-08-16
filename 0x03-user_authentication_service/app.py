@@ -71,7 +71,7 @@ def logout() -> str:
         None
 
     Return:
-        None
+        Redirect request
     """
     session_id = request.cookies.get('session_id')
     user = AUTH.get_user_from_session_id(session_id)
@@ -79,6 +79,25 @@ def logout() -> str:
         abort(403)
     AUTH.destroy_session(user.id)
     return redirect('/')
+
+
+@app.route('/profile', methods=['GET'])
+def profile() -> str:
+    """
+    This functon impliments a get profile function
+
+    Args:
+        None
+
+    Return:
+        user
+    """
+    session_id = request.cookies.get('session_id')
+    user = AUTH.get_user_from_session_id(session_id)
+    if user:
+        return jsonify({"email": user.email}), 200
+    else:
+        abort(403)
 
 
 if __name__ == "__main__":
