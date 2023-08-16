@@ -2,7 +2,7 @@
 """Basic flask app
 """
 from auth import Auth
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, redirect
 
 
 app = Flask(__name__)
