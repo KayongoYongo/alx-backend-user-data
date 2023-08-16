@@ -88,7 +88,7 @@ class Auth:
         This function creates a session ID
 
         Args:
-            email: The umeail that will be assigned to a session
+            email: The email that will be assigned to a session
 
         Return:
             A string which is the session ID.
@@ -100,3 +100,22 @@ class Auth:
         else:
             user.session_id = _generate_uuid()
             return user.session_id
+
+    def get_user_from_session_id(self, session_id):
+        """
+        This function finds the user by session ID
+
+        Args:
+            session_id: The identification of the session
+
+        Return:
+            None or User
+        """
+        if session_id is None:
+            None
+        try:
+            user = self._db.find_user_by(session_id=session_id)
+        except NoResultFound:
+            return None
+        else:
+            return user
