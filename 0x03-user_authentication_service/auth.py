@@ -119,3 +119,21 @@ class Auth:
             return None
         else:
             return user
+
+    def destroy_session(self, user_id):
+        """
+        This function destroys the current session of a user
+
+        Args:
+            user_id: The ID of the current user
+
+        Return:
+            None
+        """
+        try:
+           user = self._db.find_user_by(id=user_id)
+        except NoResultFound:
+            return None
+        else:
+            user.session_id = None
+            return None
