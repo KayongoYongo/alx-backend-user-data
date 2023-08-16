@@ -131,7 +131,7 @@ class Auth:
             None
         """
         try:
-           user = self._db.find_user_by(id=user_id)
+            user = self._db.find_user_by(id=user_id)
         except NoResultFound:
             return None
         else:
