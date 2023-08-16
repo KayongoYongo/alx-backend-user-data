@@ -62,7 +62,7 @@ def login() -> str:
     return response
 
 
-@app.route('/sessions', methods=['DELETE']):
+@app.route('/sessions', methods=['DELETE'])
 def logout() -> str:
     """This function impliments a log out function by
     deleting a session
